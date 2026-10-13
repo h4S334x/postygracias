@@ -1,3 +1,4 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -6,7 +7,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+var contactoRouter = require('./routes/contacto');
 var app = express();
 
 // view engine setup
@@ -21,43 +22,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
-// GET / -> Home
-app.get('/', function(req, res) {
-  res.render('index', { title: 'Home' });
-});
-
-// GET /historia
-app.get('/historia', function(req, res) {
-  res.render('historia', { title: 'Historia' });
-});
-
-// GET /novedades
-app.get('/novedades', function(req, res) {
-  res.render('novedades', { title: 'Novedades' });
-});
-
-// GET /nosotros
-app.get('/nosotros', function(req, res) {
-  res.render('nosotros', { title: 'Nosotros' });
-});
-
-// GET /testimonios
-app.get('/testimonios', function(req, res) {
-  res.render('testimonios', { title: 'Testimonios' });
-});
-
-// GET /contacto -> muestra el formulario
-app.get('/contacto', function(req, res) {
-  res.render('contacto', { title: 'Contactanos' });
-});
-
-// POST /contacto -> recibe los datos del formulario
-app.post('/contacto', function(req, res) {
-  var nombre = req.body.nombre || 'visitante';
-  var mensaje = req.body.mensaje || '(sin mensaje)';
-  res.render('gracias', { title: 'Mensaje enviado', nombre: nombre, mensaje: mensaje });
-});
+app.use('/', indexRouter);
+app.use('/contacto', contactoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
